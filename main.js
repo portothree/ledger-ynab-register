@@ -11,8 +11,8 @@ function createOutflow(metadata = {}) {
 
 	return `
 ${date}	${createStatus(status)}	${payee}
-	Expenses:${category}	${currency} ${amount}	${memo ? '; ' + memo : ''}
-	Assets:${account}	${currency}	-${amount}
+	Expenses:${category}		${currency} ${amount}	${memo ? '; ' + memo : ''}
+	Assets:${account}		${currency}	-${amount}
 	`;
 }
 
@@ -22,8 +22,8 @@ function createInflow(metadata = {}) {
 
 	return `
 ${date}	${createStatus(status)}	${payee}
-	Assets:${account}	${currency} ${amount}	${memo ? '; ' + memo : ''}
-	Income	${currency}	-${amount}
+	Assets:${account}		${currency} ${amount}	${memo ? '; ' + memo : ''}
+	Income		${currency}	-${amount}
 	`;
 }
 
@@ -54,7 +54,22 @@ async function main() {
 		}
 
 		return records;
-	})().then((records) => records.slice(1));
+	})().then((records) =>
+		records.slice(1).sort(([_, __, a], [___, ____, b]) => {
+			const dateA = Math.round(new Date(a).getTime() / 1000);
+			const dateB = Math.round(new Date(b).getTime() / 1000);
+
+			if (dateA < dateB) {
+				return -1;
+			}
+
+			if (dateA > dateB) {
+				return 1;
+			}
+
+			return 0;
+		})
+	);
 
 	for (const [
 		account,
