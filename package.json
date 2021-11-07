@@ -1,0 +1,23 @@
+{
+  "name": "ledger-ynab-tsv",
+  "version": "1.0.0",
+  "description": "Transform a YNAB `.tsv` register file into a ledger journal",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/portothree/ledger-ynab-tsv.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/portothree/ledger-ynab-tsv/issues"
+  },
+  "homepage": "https://github.com/portothree/ledger-ynab-tsv#readme",
+  "dependencies": {
+    "tsv": "^0.2.0"
+  }
+}
