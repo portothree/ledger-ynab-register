@@ -1,0 +1,3 @@
+﻿"Account","Flag","Date","Payee","Category Group/Category","Category Group","Category","Memo","Outflow","Inflow","Cleared"
+"N26","","2021-11-01","Employer","Inflow: Ready to Assign","Inflow","Ready to Assign","",0.00,9000.00,"Cleared"
+"N26","Blue","2021-11-06","Uber","Immediate Obligations: Transportation","Immediate Obligations","Transportation","",8.76,0.00,"Cleared"

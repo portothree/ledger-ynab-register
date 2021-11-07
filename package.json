@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/portothree/ledger-ynab-tsv#readme",
   "dependencies": {
-    "tsv": "^0.2.0"
+    "csv-parse": "^4.16.3"
   }
 }
