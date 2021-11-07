@@ -10,7 +10,7 @@ Before exporting your budget file, follow these steps in the budget settings:
 -   Change the currency placement to `Don't display symbol(123,456.78)`
 -   Change the date format to `2015-12-30`
 
-node <script_path> <currency> <register_path>
+`node <SCRIPT_PATH> <CURRENCY> <REGISTER_PATH>`
 
 Example
 `node main.js EUR YNAB_register.csv`
