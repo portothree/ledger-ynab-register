@@ -1,0 +1,10 @@
+; -*- ledger -*-
+
+2021-11-01	*	Employer
+	Assets:N26	EUR 9000.00	
+	Income	EUR	-9000.00
+	
+2021-11-06	*	Uber
+	Expenses:Transportation	EUR 8.76	
+	Assets:N26	EUR	-8.76
+	

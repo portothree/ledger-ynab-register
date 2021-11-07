@@ -1,48 +1,34 @@
 const fs = require('fs');
 const parse = require('csv-parse');
 
-const YNAB_COLUMNS_COUNT = 11;
-
 function createStatus(status) {
 	return status === 'Cleared' ? '*' : '!';
 }
 
-function createOutflow(
-	account,
-	date,
-	payee,
-	category,
-	memo,
-	currency,
-	amount,
-	status
-) {
+function createOutflow(metadata = {}) {
+	const { account, date, payee, category, memo, currency, amount, status } =
+		metadata;
+
 	return `
-		${date}	${createStatus(status)}	${payee}
-			Expenses:${category}	${currency} ${amount}	${memo ? '; ' + memo : ''}
-			Assets:${account}	${currency}	-${amount}
+${date}	${createStatus(status)}	${payee}
+	Expenses:${category}	${currency} ${amount}	${memo ? '; ' + memo : ''}
+	Assets:${account}	${currency}	-${amount}
 	`;
 }
 
-function createInflow(
-	account,
-	date,
-	payee,
-	category,
-	memo,
-	currency,
-	amount,
-	status
-) {
+function createInflow(metadata = {}) {
+	const { account, date, payee, category, memo, currency, amount, status } =
+		metadata;
+
 	return `
-		${date}	${createStatus(status)}	${payee}
-			Assets:${account}	${currency} ${amount}	${memo ? '; ' + memo : ''}
-			Income	${currency}	-${amount}
+${date}	${createStatus(status)}	${payee}
+	Assets:${account}	${currency} ${amount}	${memo ? '; ' + memo : ''}
+	Income	${currency}	-${amount}
 	`;
 }
 
 async function main() {
-	const [currency, filePath, delimiter] = process.argv.slice(2);
+	const [currency, filePath] = process.argv.slice(2);
 
 	if (!filePath) {
 		throw new Error('Path to register file not provided');
@@ -50,13 +36,15 @@ async function main() {
 
 	const parser = fs.createReadStream(filePath).pipe(
 		parse({
-			delimiter,
+			delimiter: ',',
 			quote: '"',
 			ltrim: true,
 			rtrim: true,
 			bom: true,
 		})
 	);
+	const writeStream = fs.createWriteStream('./output.ledger');
+	writeStream.write('; -*- ledger -*-\n');
 
 	const registerRows = await (async () => {
 		const records = [];
@@ -81,32 +69,26 @@ async function main() {
 		inflow,
 		status,
 	] of registerRows) {
+		const metadata = {
+			account,
+			date,
+			payee,
+			category,
+			memo,
+			currency,
+			status,
+		};
+
 		if (!!Number(outflow)) {
-			createOutflow(
-				account,
-				date,
-				payee,
-				category,
-				memo,
-				currency,
-				outflow,
-				status
-			);
+			writeStream.write(createOutflow({ ...metadata, amount: outflow }));
 		}
 
 		if (!!Number(inflow)) {
-			createInflow(
-				account,
-				date,
-				payee,
-				category,
-				memo,
-				currency,
-				inflow,
-				status
-			);
+			writeStream.write(createInflow({ ...metadata, amount: inflow }));
 		}
 	}
+
+	writeStream.end();
 }
 
 main().catch(console.log);
