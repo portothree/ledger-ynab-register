@@ -1,6 +1,6 @@
 # ledger-ynab-register
 
-Transform a YNAB `.csv` register file into a [ledger](https://github.com/ledger/ledger)journal
+Transform a YNAB `.csv` register file into a [ledger](https://github.com/ledger/ledger) journal
 
 ## Usage
 
